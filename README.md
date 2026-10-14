@@ -45,30 +45,37 @@ Tip Court runs every stock tip or ticker query through a simulated adversarial t
 
 ## Interface
 
-### Stock Input
-Input any ticker symbol or paste raw social media tips. Supports currency toggle (INR, USD, EUR, GBP), allocation sizing, and existing shareholdings for hold/sell guidance.
+### Stock & Tip Input
+Supports direct stock evaluation and social media tip verification. Features an intuitive currency switcher (INR, USD, EUR, GBP) and quick allocation presets.
 
-![Stock and Tip Input Interface](docs/screenshots/tip-verification-input.png)
+![Stock Evaluation Input with Currency Switcher](docs/screenshots/stock-evaluation-input.png)
+
+![Social Tip Verification Prompt](docs/screenshots/tip-verification-input.png)
 
 ### Price Feed Autocomplete
-Search equities across NSE, BSE, NASDAQ, and NYSE with real-time price quotes, daily changes, and 1-month SVG sparklines.
+Live autocomplete search across NSE, BSE, NASDAQ, and NYSE equities with real-time price quotes, daily percentage changes, and 1-month SVG sparklines.
 
 ![Live Autocomplete Stock Select Menu with SVG Sparklines](docs/screenshots/stock-search-autocomplete.png)
+
+### Existing Holdings Advice
+Toggle to enter currently owned shares and average purchase price to receive personalized `HOLD`, `BOOK PROFITS`, `ACCUMULATE`, or `CUT LOSS` recommendations.
+
+![Existing Holdings Guidance Toggle](docs/screenshots/holdings-advice-toggle.png)
 
 ### Courtroom Trial
 Parallel specialized agents present opposing evidence. The Prosecutor argues the technical risk case, while the Defence highlights fundamental balance sheet resilience.
 
 ![Courtroom Trial: Prosecutor vs Defence](docs/screenshots/prosecutor-defence-trial.png)
 
-### Evidence Stream
-Every argument carries a verified citation link to BSE/NSE audited filings, Yahoo Finance live data, or Tavily web sentiment.
-
-![Audited Evidence Stream and Source Citations](docs/screenshots/citations-evidence-stream.png)
-
 ### Conflict Resolution
-Surfaces a Split Court alert whenever agents report high opposing confidence, displaying categorized bear, bull, and audit findings.
+Surfaces a Split Court alert whenever agents report high opposing confidence, displaying categorized bear, bull, and audit findings with verified citations.
 
 ![Evidence Analysis and Conflict Resolution](docs/screenshots/courtroom-evidence-clash.png)
+
+### Evidence Stream
+Every finding carries a verified citation link to audited BSE/NSE filings, Yahoo Finance live data, or Tavily web sentiment.
+
+![Audited Evidence Stream and Source Citations](docs/screenshots/citations-evidence-stream.png)
 
 ### Risk Meter
 Displays a 0 to 100 Regret Risk Score gauge, individual agent confidence levels, and a multi-axis risk shape radar chart.
