@@ -82,6 +82,18 @@ Displays a 0 to 100 Regret Risk Score gauge, individual agent confidence levels,
 
 ![Regret Risk Gauge and Confidence Analysis](docs/screenshots/verdict-risk-meter.png)
 
+### Report Export Toolbar
+One-click export toolbar to download official trial reports as formatted Print/PDF documents, Excel CSV spreadsheets, or Markdown documentation.
+
+![Court Analysis Report with Export Toolbar and Trade Execution Plan](docs/screenshots/verdict-trade-plan-export.png)
+
+![CSV Report Download Confirmation](docs/screenshots/export-download-completed.png)
+
+### Community Sentiment & Metrics
+Aggregates real-time investor sentiment from Reddit, Stocktwits, and financial forums via Tavily, paired with a sub-5s runtime execution metrics strip.
+
+![Live Community Discussions and Execution Metrics](docs/screenshots/community-discussions-metrics.png)
+
 ---
 
 ## Pipeline
