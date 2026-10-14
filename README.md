@@ -1,4 +1,4 @@
-# VibeFinance: Tip Court
+# Tip Court
 
 [![Hackathon: Wild Bugs 2026](https://img.shields.io/badge/Hackathon-Wild%20Bugs%202026-7c3aed?style=for-the-badge&logo=target)](https://github.com/tech-anupam/VibeFinance)
 [![Next.js 15](https://img.shields.io/badge/Next.js-15.1-000000?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org/)
@@ -9,168 +9,157 @@
 [![Tavily Search](https://img.shields.io/badge/Tavily-Live%20Web%20AI-4f46e5?style=for-the-badge&logo=googlechrome&logoColor=white)](https://tavily.com/)
 [![Vitest](https://img.shields.io/badge/Tests-31%20Passed-22c55e?style=for-the-badge&logo=vitest&logoColor=white)](https://vitest.dev/)
 
-> Multi-agent autonomous financial intelligence platform turning raw market data, regulatory filings, and social chatter into evidence-backed, personalized verdicts for retail investors.
+> Autonomous multi-agent financial intelligence platform turning market feeds, regulatory filings, and social chatter into evidence-backed, personalized verdicts for retail investors.
 
 **Builder:** Anupam Jha | **Repository:** [tech-anupam/VibeFinance](https://github.com/tech-anupam/VibeFinance) | **Hackathon:** Wild Bugs 2026
 
 ---
 
-## The Real Problem: Noise, Tips, and Retail Losses
+## Problem
 
-Retail investors are flooded with unsolicited stock tips on Telegram groups, WhatsApp channels, and YouTube videos:
-- *"Guaranteed 50% breakout in 2 weeks!"*
-- *"Promoter accumulation secretly underway!"*
-- *"Zero debt hidden multibagger, buy now!"*
+Retail investors are targeted with unsolicited stock tips across Telegram, WhatsApp, and social media:
+- "Guaranteed 50% breakout in 2 weeks!"
+- "Promoter accumulation secretly underway!"
+- "Zero debt hidden multibagger, buy now!"
 
-Institutional hedge funds have Bloomberg terminals, data pipelines, and research teams to verify claims. Retail investors do not have the time to read 200-page annual filings or know whether a tip is a real opportunity or an orchestrated pump-and-dump trap.
+Hedge funds use Bloomberg terminals and dedicated research teams to verify claims. Retail investors lack the tools to parse 200-page regulatory filings, distinguish real growth from pump-and-dump operations, or evaluate portfolio risk before risking capital.
 
 ---
 
-## What Tip Court Delivers
+## Solution
 
-**Tip Court** puts every stock query or social tip through a simulated trial before capital is put on the line.
+Tip Court runs every stock tip or ticker query through a simulated adversarial trial before capital is committed:
+- **5 parallel AI agents** cross-examine the stock across filings, live market metrics, and web sentiment.
+- **Deterministic TypeScript analytics** calculate RSI, MACD, Volume Z-Score, and portfolio concentration (HHI). The LLM never computes math.
+- **Deterministic arbiter** produces a final verdict with an exact trade execution plan.
+- **Anti-hallucination verifier** drops uncited claims and replaces them with an "insufficient evidence" label.
 
-Instead of relying on a single conversational chatbot, Tip Court executes **5 specialized AI agents in parallel**. They cross-examine the stock across audited filings, live market metrics, and real-time community discussions, delivering one clear verdict:
-
-| Verdict | What It Means to You | Action |
+| Verdict | Meaning | Recommended Action |
 |---|---|---|
 | **PROCEED** | Strong fundamentals, verified filings, positive momentum. | Safe to enter with recommended position sizing. |
 | **REDUCE_SIZE** | Solid business, but high valuation or portfolio concentration. | Halve your allocation to protect downside. |
 | **WAIT_48H** | High volatility or imminent event risk (earnings, policy). | Allow price action to settle for 2 days. |
 | **AVOID** | False claims, high debt, red flags, or severe overbought signals. | Stay away and preserve your capital. |
 
-Every finding carries an exact clickable citation link (BSE/NSE filing, Yahoo live feed, or Tavily web search). Unverified claims are tagged as **insufficient evidence**.
-
 ---
 
-## User Interface & Live Screenshots
+## Interface
 
-### 1. Stock & Tip Input with Currency Switcher
-Enter a direct stock query or paste raw social media tips from WhatsApp or Telegram. Select your currency (INR, USD, EUR, GBP), set planned allocation, or toggle existing shareholdings for hold/sell guidance.
+### Stock Input
+Input any ticker symbol or paste raw social media tips. Supports currency toggle (INR, USD, EUR, GBP), allocation sizing, and existing shareholdings for hold/sell guidance.
 
 ![Stock and Tip Input Interface](docs/screenshots/tip-verification-input.png)
 
-### 2. SVG Live Price Feed & Autocomplete Stock Select Menu
-Search any stock across NSE, BSE, NASDAQ, or NYSE. View real-time quotes, percentage movements, and 1-month SVG sparklines directly inside the dropdown.
+### Price Feed Autocomplete
+Search equities across NSE, BSE, NASDAQ, and NYSE with real-time price quotes, daily changes, and 1-month SVG sparklines.
 
 ![Live Autocomplete Stock Select Menu with SVG Sparklines](docs/screenshots/stock-search-autocomplete.png)
 
-### 3. The Courtroom Trial: Prosecutor vs Defence
-Parallel specialized agents present opposing evidence. The Prosecutor argues the technical risk and valuation headwind case, while the Defence highlights fundamental balance sheet resilience and market momentum.
+### Courtroom Trial
+Parallel specialized agents present opposing evidence. The Prosecutor argues the technical risk case, while the Defence highlights fundamental balance sheet resilience.
 
 ![Courtroom Trial: Prosecutor vs Defence](docs/screenshots/prosecutor-defence-trial.png)
 
-### 4. Audited Evidence Stream & Source Citations
-Every argument is backed by a verified, clickable citation link to audited BSE/NSE filings, Yahoo Finance market feeds, or real-time Tavily web discussions. Unsubstantiated claims are dropped.
+### Evidence Stream
+Every argument carries a verified citation link to BSE/NSE audited filings, Yahoo Finance live data, or Tavily web sentiment.
 
 ![Audited Evidence Stream and Source Citations](docs/screenshots/citations-evidence-stream.png)
 
-### 5. Evidence Analysis & Conflict Resolution
-When agents disagree, Tip Court surfaces a **Split Court** alert card and lists verified arguments categorized by Bear Argument, Bull Argument, and Filing Audit.
+### Conflict Resolution
+Surfaces a Split Court alert whenever agents report high opposing confidence, displaying categorized bear, bull, and audit findings.
 
 ![Evidence Analysis and Conflict Resolution](docs/screenshots/courtroom-evidence-clash.png)
 
-### 6. Regret Risk Gauge, Confidence Bars & Radar Chart
-Visual verdict summary featuring a 0 to 100 Regret Risk Score gauge, individual agent confidence meters, and a multi-axis risk shape radar chart.
+### Risk Meter
+Displays a 0 to 100 Regret Risk Score gauge, individual agent confidence levels, and a multi-axis risk shape radar chart.
 
 ![Regret Risk Gauge and Confidence Analysis](docs/screenshots/verdict-risk-meter.png)
 
 ---
 
-## How It Works: Interactive Flowchart
+## Pipeline
 
 ```mermaid
 flowchart TD
-    A["👤 User Input<br/>(Stock Ticker or Copied Tip)"] --> B["🔍 Claim Extractor Agent<br/>(Extracts verifiable claims)"]
+    A["User Input (Ticker or Tip)"] --> B["Claim Extractor Agent<br/>(qwen/qwen3.8-27b on Groq)"]
 
-    B --> C["🌐 Live Data & RAG Layer"]
-    C --> C1["📈 Yahoo Finance<br/>(Live Quote & Price Bars)"]
-    C --> C2["📑 BSE/NSE Filings Corpus<br/>(Audited Balance Sheets)"]
-    C --> C3["💬 Tavily Search<br/>(Reddit, X, Forums in 24h)"]
-    C --> C4["🧮 TypeScript Math<br/>(RSI, MACD, Volume Z-Score, HHI)"]
+    B --> C["Data & Retrieval Layer"]
+    C --> C1["Yahoo Finance<br/>(Live Quotes & Bars)"]
+    C --> C2["BSE/NSE Filings<br/>(Audited Balance Sheets)"]
+    C --> C3["Tavily Search<br/>(Reddit, X, Forums in 24h)"]
+    C --> C4["TypeScript Analytics<br/>(RSI, MACD, Volume, HHI)"]
 
-    C1 --> D["⚡ Parallel Agent Trial"]
+    C1 --> D["Parallel Courtroom Pool"]
     C2 --> D
     C3 --> D
     C4 --> D
 
-    D --> E1["🕵️ Forensic Auditor<br/>(Verifies claims against filings)"]
-    D --> E2["📉 Prosecutor<br/>(Builds technical bear case)"]
-    D --> E3["📈 Defence<br/>(Builds fundamental bull case)"]
-    D --> E4["🧠 Behavioral Mirror<br/>(Flags emotional trader habits)"]
-    D --> E5["🛡️ Risk Analyst<br/>(Evaluates portfolio concentration)"]
+    D --> E1["Forensic Auditor<br/>(Verifies claims against filings)"]
+    D --> E2["Prosecutor<br/>(Technical & valuation bear case)"]
+    D --> E3["Defence<br/>(Fundamental & momentum bull case)"]
+    D --> E4["Behavioral Mirror<br/>(Flags emotional trader habits)"]
+    D --> E5["Risk Analyst<br/>(Portfolio concentration & limits)"]
 
-    E1 --> F["🔒 Verifier Loop<br/>(Drops uncited or fake facts)"]
+    E1 --> F["Verifier Loop<br/>(Drops uncited claims)"]
     E2 --> F
     E3 --> F
     E4 --> F
     E5 --> F
 
-    F --> G["⚖️ Deterministic Arbiter<br/>(Mathematical score from profile weights)"]
+    F --> G["Deterministic Arbiter<br/>(Mathematical score from profile weights)"]
 
-    G --> H["📋 Final User Verdict<br/>(PROCEED | REDUCE_SIZE | WAIT_48H | AVOID)"]
-    H --> I["📊 Trade Plan (Entry, Target, Stop Loss)"]
-    H --> J["🔄 Hold/Sell Advice for Existing Shares"]
-    H --> K["💾 Export Report (PDF, Excel CSV, Markdown)"]
+    G --> H["Final Verdict<br/>(PROCEED | REDUCE_SIZE | WAIT_48H | AVOID)"]
+    H --> I["Trade Plan (Allocation, Target, Stop Loss)"]
+    H --> J["Hold/Sell Advice for Existing Shares"]
+    H --> K["Export Report (PDF, Excel CSV, Markdown)"]
 ```
 
 ---
 
-## Practical Features for Traders
+## Core Features
 
-- **Clean Stock Search:** Auto-complete search across all NSE, BSE, NASDAQ, and NYSE equities with real-time quotes and 1-month sparkline charts.
-- **Smart Currency Support:** Native support for Indian Rupee (INR) by default, plus USD, EUR, and GBP with clean, compact amount inputs.
-- **Trade Execution Plan:**
-  - Suggested starting amount based on volatility.
-  - Estimated profit target price and percentage.
-  - Recommended stop-loss floor level.
-  - Realistic Risk-to-Reward ratio (e.g. 1 : 2.4).
-- **Hold or Sell Advice for Existing Shareholders:**
-  - Toggle to input shares currently owned and average purchase price.
-  - Receives tailored advice: `HOLD`, `BOOK PROFITS`, `ACCUMULATE`, or `CUT LOSS`.
-- **Direct Report Exporting:**
-  - **Print / PDF:** Clean, print-formatted executive summary.
-  - **Excel (CSV):** Tabular data file containing verdict, scores, all agent findings, and source links.
-  - **Doc (Markdown):** Complete markdown report ready for sharing.
+- **Global Equities Autocomplete:** Live quotes and SVG sparklines across NSE, BSE, NASDAQ, and NYSE.
+- **Multi-Currency Support:** Native INR (default), USD, EUR, and GBP support.
+- **Actionable Trade Plan:** Suggested allocation, profit target price, stop-loss floor, and risk-to-reward ratio.
+- **Existing Shareholder Guidance:** Personalized advice (`HOLD`, `BOOK PROFITS`, `ACCUMULATE`, `CUT LOSS`) based on user cost basis.
+- **One-Click Export:** Download reports formatted for Print/PDF, Excel CSV, or Markdown documentation.
 
 ---
 
-## Why Database Is Used (In Plain English)
+## Database Design
 
-The PS04 Hackathon problem statement requires personalized investor profiling and persistent historical tracking:
+Tip Court uses Turso (libSQL) with Drizzle ORM to maintain an audit trail and personalize decisions:
 
-1. **User Risk Profiles (`profiles` table):**
-   Stores distinct investor archetypes (Conservative, Aggressive, Panic-Seller) with individual concentration thresholds (HHI limits) and agent weights.
-2. **Behavioral History (`trades` table):**
-   Persists past trade executions. The Behavioral Mirror agent scans this history to detect emotional flaws (averaging down on losers, panic selling on dips, FOMO buying).
-3. **Audit Trail (`sessions` table):**
-   Every trial run stores extracted claims, agent findings, citations, verifier retries, and the final score for regulatory compliance.
-4. **Pre-Indexed Filings (`filing_chunks` table):**
-   Stores pre-chunked annual reports and corporate announcement excerpts for sub-second retrieval augmented generation (RAG).
+1. **`profiles`:** Stores investor archetypes (Conservative, Aggressive, Panic-Seller) with individual risk thresholds and agent weights.
+2. **`trades`:** Stores execution history to detect behavioral patterns (averaging down, panic selling, FOMO entries).
+3. **`sessions`:** Full audit log of extracted claims, agent findings, citations, and arbiter scores.
+4. **`filing_chunks`:** Pre-chunked annual reports and disclosures for sub-second BM25 retrieval.
 
 ---
 
-## Detailed Documentation
+## Documentation
 
-- [System Architecture & Agent Contracts](docs/ARCHITECTURE.md) : Detailed pipeline flow, arbiter weights, and verifier loop.
-- [Retrieval-Augmented Generation (RAG) & BM25](docs/RAG.md) : Document chunking, Okapi BM25 ranking, and anti-hallucination citation verification.
-- [Agent Extender & Modular Skills (GitHub Integration)](docs/SKILLS.md) : Dynamic BM25 skill selector, provenance enforcement via `SOURCE.md`, and zero-trust sandboxing.
-- [Data Provenance & Source Disclosures](docs/DATA.md) : Data adapters, caching policies, and degraded mode behavior.
+| Guide | Badge | Topic |
+|---|---|---|
+| [System Architecture](https://github.com/tech-anupam/VibeFinance/blob/main/docs/ARCHITECTURE.md) | [![Architecture](https://img.shields.io/badge/Docs-System%20Architecture-2563eb?style=flat&logo=diagram-next&logoColor=white)](https://github.com/tech-anupam/VibeFinance/blob/main/docs/ARCHITECTURE.md) | Pipeline sequence, arbiter weighting formula, agent contracts, degraded modes. |
+| [RAG & BM25](https://github.com/tech-anupam/VibeFinance/blob/main/docs/RAG.md) | [![RAG Pipeline](https://img.shields.io/badge/Docs-RAG%20%26%20BM25-059669?style=flat&logo=databricks&logoColor=white)](https://github.com/tech-anupam/VibeFinance/blob/main/docs/RAG.md) | Annual report chunking, Okapi BM25 ranking, anti-hallucination citation verification. |
+| [Agent Extender & Skills](https://github.com/tech-anupam/VibeFinance/blob/main/docs/SKILLS.md) | [![Agent Skills](https://img.shields.io/badge/Docs-Agent%20Extender%20%26%20Skills-7c3aed?style=flat&logo=github&logoColor=white)](https://github.com/tech-anupam/VibeFinance/blob/main/docs/SKILLS.md) | GitHub skills loader, provenance checks via `SOURCE.md`, tool sandbox, BM25 selector. |
+| [Data Provenance](https://github.com/tech-anupam/VibeFinance/blob/main/docs/DATA.md) | [![Data Provenance](https://img.shields.io/badge/Docs-Data%20Provenance-d97706?style=flat&logo=sqlite&logoColor=white)](https://github.com/tech-anupam/VibeFinance/blob/main/docs/DATA.md) | BSE/NSE filings, Yahoo Finance, Tavily recency filter, local cache fallback. |
 
 ---
 
-## Technology Stack
+## Tech Stack
 
 | Layer | Technology | Purpose |
 |---|---|---|
-| **Frontend Framework** | ![Next.js](https://img.shields.io/badge/Next.js%2015-000000?style=flat&logo=next.js&logoColor=white) | React 19 App Router and Server Components |
+| **Frontend** | ![Next.js](https://img.shields.io/badge/Next.js%2015-000000?style=flat&logo=next.js&logoColor=white) | React 19 App Router and Server Components |
 | **Language** | ![TypeScript](https://img.shields.io/badge/TypeScript%205.7-3178c6?style=flat&logo=typescript&logoColor=white) | Strict typing with zero `any` |
-| **Styling** | ![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS%20v4-06b6d4?style=flat&logo=tailwindcss&logoColor=white) | Responsive mobile-first dark UI |
-| **AI Inference** | ![Groq](https://img.shields.io/badge/Groq%20LPU-f55036?style=flat&logo=lightning&logoColor=white) | Ultra-fast JSON inference (`qwen/qwen3.8-27b`) |
+| **Styling** | ![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS%20v4-06b6d4?style=flat&logo=tailwindcss&logoColor=white) | Mobile-first dark theme UI |
+| **Inference** | ![Groq](https://img.shields.io/badge/Groq%20LPU-f55036?style=flat&logo=lightning&logoColor=white) | Fast JSON inference (`qwen/qwen3.8-27b`) |
 | **Database** | ![Turso](https://img.shields.io/badge/Turso%20libSQL-00eb8a?style=flat&logo=sqlite&logoColor=black) | Edge SQLite database managed via Drizzle ORM |
-| **Live Research** | ![Tavily](https://img.shields.io/badge/Tavily%20Search-4f46e5?style=flat&logo=googlechrome&logoColor=white) | Real-time social discourse from Reddit, X, and forums |
+| **Web Research** | ![Tavily](https://img.shields.io/badge/Tavily%20Search-4f46e5?style=flat&logo=googlechrome&logoColor=white) | Real-time social discourse from Reddit, X, and forums |
 | **Market Feeds** | ![Yahoo Finance](https://img.shields.io/badge/Yahoo%20Finance-6001d2?style=flat&logo=yahoo&logoColor=white) | Live quotes and historical daily price bars |
-| **Unit Testing** | ![Vitest](https://img.shields.io/badge/Vitest%202.1-729b1b?style=flat&logo=vitest&logoColor=white) | 31 automated tests across math, indicators, skills, and RAG |
+| **Testing** | ![Vitest](https://img.shields.io/badge/Vitest%202.1-729b1b?style=flat&logo=vitest&logoColor=white) | 31 automated tests across math, indicators, skills, and RAG |
 
 ---
 
@@ -204,7 +193,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
-## Verification & Testing
+## Testing
 
 - `pnpm test` : Runs all 31 unit tests (technical indicators, HHI concentration, behavioral bias detector, BM25 retrieval, skills loader, trade planning).
 - `pnpm run eval` : Runs 20 real-world benchmark scenarios and outputs verdict agreement rate, claim precision, and latency percentiles.
