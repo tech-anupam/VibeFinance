@@ -1,0 +1,66 @@
+[
+  {
+    "symbol": "RELIANCE.NS",
+    "company": "Reliance Industries Limited",
+    "filingDate": "2024-05-15",
+    "source": "BSE Annual Filing FY24",
+    "title": "RIL Annual Financial Disclosures FY24",
+    "excerpt": "Net debt stood at zero on net basis in oil-to-chemicals and telecom businesses. Consolidated revenue reached INR 1,000,122 crore. Capital expenditure was INR 131,769 crore. Promoter shareholding stood at 50.3% with zero shares pledged."
+  },
+  {
+    "symbol": "TCS.NS",
+    "company": "Tata Consultancy Services Limited",
+    "filingDate": "2024-04-12",
+    "source": "NSE Audited Financial Results FY24",
+    "title": "TCS Audited Financial Results and Shareholding FY24",
+    "excerpt": "Operating margin stood at 24.6%. The company is virtually debt-free with cash and cash equivalents of INR 50,460 crore. Promoter holding was steady at 71.77% with zero promoter pledge. Final dividend of INR 28 per share declared."
+  },
+  {
+    "symbol": "HDFCBANK.NS",
+    "company": "HDFC Bank Limited",
+    "filingDate": "2024-04-20",
+    "source": "BSE Shareholding and Basel III Disclosures FY24",
+    "title": "HDFC Bank Annual Financial Statements and Regulatory Disclosures",
+    "excerpt": "Gross NPA ratio stood at 1.24% with Net NPA at 0.33%. Capital adequacy ratio was 18.80% well above regulatory requirement. Promoter holding is 0% as HDFC Bank is a widely held, board-governed institution. Deposit growth was 26.4% YoY."
+  },
+  {
+    "symbol": "INFY.NS",
+    "company": "Infosys Limited",
+    "filingDate": "2024-04-18",
+    "source": "NSE Form 20-F and Audited Statements FY24",
+    "title": "Infosys Consolidated Financial Statements FY24",
+    "excerpt": "Free cash flow for the year was USD 2.9 billion. Company has zero long-term debt. Promoter shareholding stood at 14.6% with no pledged shares. Revenue grew 1.4% in constant currency. Large deal TCV stood at USD 17.7 billion."
+  },
+  {
+    "symbol": "TATAMOTORS.NS",
+    "company": "Tata Motors Limited",
+    "filingDate": "2024-05-10",
+    "source": "BSE Audited Financial Results FY24",
+    "title": "Tata Motors Annual Report FY24",
+    "excerpt": "JLR automotive net debt reduced to GBP 732 million. Consolidated revenue grew 26.6% to INR 437,928 crore. Promoter holding is 46.36% with zero pledged shares. Board recommended dividend of INR 6 per ordinary share."
+  },
+  {
+    "symbol": "ZOMATO.NS",
+    "company": "Zomato Limited",
+    "filingDate": "2024-05-13",
+    "source": "BSE Audited Financial Results FY24",
+    "title": "Zomato Q4 and Annual Financial Disclosures FY24",
+    "excerpt": "Consolidated PAT turned positive to INR 351 crore for FY24 compared to a loss of INR 971 crore in FY23. Quick commerce (Blinkit) GOV grew 93% YoY. Net cash balance stood at INR 12,240 crore with zero long-term debt. Institution holding is 54.7%."
+  },
+  {
+    "symbol": "IRCTC.NS",
+    "company": "Indian Railway Catering and Tourism Corporation",
+    "filingDate": "2024-05-28",
+    "source": "NSE Corporate Disclosures FY24",
+    "title": "IRCTC Annual Disclosures and Promoter Holding FY24",
+    "excerpt": "IRCTC is zero-debt with cash balance of INR 2,400 crore. Government of India (promoter) holds 62.40% equity with zero pledge. Operating profit margin reached 35.8%. Monopoly catering and ticketing agreement with Ministry of Railways remains intact."
+  },
+  {
+    "symbol": "ITC.NS",
+    "company": "ITC Limited",
+    "filingDate": "2024-05-23",
+    "source": "BSE Annual Filing FY24",
+    "title": "ITC Financial Results and Demerger Disclosure FY24",
+    "excerpt": "Demerger of Hotels business approved by shareholders. Total revenue from operations was INR 70,251 crore. Zero debt with robust cash surplus of INR 19,500 crore. FMCG-others revenue crossed INR 20,000 crore mark."
+  }
+]

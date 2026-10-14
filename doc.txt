@@ -1,0 +1,304 @@
+ROLE
+You are a senior full-stack engineer building "Tip Court" for the PS04 VibeFinance hackathon. Deliver a working, demo-ready system in a few hours. Prefer a small system that fully works over a large one that half works.
+
+PRODUCT
+A retail investor pastes a stock tip or intended trade (Telegram, YouTube, Reddit style). The system extracts checkable claims, verifies each claim against source documents, compares the intended trade with the user's own trade history, runs bull and bear signal analysis, and returns one verdict: PROCEED, REDUCE_SIZE, WAIT_48H or AVOID. Every statement shown to the user carries a source or the label "insufficient evidence". Output is education, not investment advice, and the UI says so.
+
+HARD RULES
+1. No code comments anywhere. No docstrings, no JSDoc, no TODO, no commented-out code. Names carry the meaning.
+2. No placeholder logic, no mock functions pretending to work, no "lorem" text, no fake success paths. If something is not implemented, it does not exist in the code.
+3. All numbers (RSI, returns, volume z-score, HHI, P&L, behavior stats) are computed in deterministic TypeScript. The LLM never calculates. The LLM only extracts claims, argues, and narrates from provided evidence.
+4. Every agent output is validated with zod. Invalid output triggers the verifier loop, never a silent pass.
+5. No claim reaches the UI without a source id. Unsourced claims are dropped and rendered as "insufficient evidence".
+6. No emojis in code, UI copy or docs. No marketing fluff, no gradient-heavy generic AI look.
+7. TypeScript strict mode. No `any`. No default exports except Next.js pages/layouts. Functions under 40 lines. One responsibility per file.
+8. No dead code, no unused dependencies, no console.log in committed code (use the logger in lib/log.ts).
+9. Secrets only through environment variables validated at boot in lib/env.ts.
+10. Every external call has a timeout, an error type, and a fallback path. Pipeline never throws to the user.
+11. Synthetic data is labeled synthetic in the UI and in README. Never present invented data as real.
+
+STACK
+Next.js App Router, TypeScript strict, Tailwind, zod, Groq SDK (llama models) for LLM calls, Turso (libSQL) with drizzle for profiles, trades and session logs, deployable on Cloudflare or Vercel. Vitest for tests.
+
+PROJECT STRUCTURE
+```
+src/
+  app/
+    page.tsx
+    trace/[sessionId]/page.tsx
+    api/
+      verdict/route.ts
+      compare/route.ts
+      degrade/route.ts
+      eval/route.ts
+  core/
+    pipeline.ts
+    runner.ts
+    arbiter.ts
+    verifier.ts
+    retry.ts
+  agents/
+    claim-extractor.ts
+    forensic-auditor.ts
+    prosecutor.ts
+    defence.ts
+    behavioral-mirror.ts
+    risk.ts
+    index.ts
+  skills/
+    registry.ts
+    types.ts
+    prompts/
+      claim-extractor.md
+      forensic-auditor.md
+      prosecutor.md
+      defence.md
+      behavioral-mirror.md
+      risk.md
+      judge.md
+  sources/
+    types.ts
+    registry.ts
+    price/
+      yahoo.ts
+      cache.ts
+    filings/
+      local-corpus.ts
+    index.ts
+  retrieval/
+    bm25.ts
+    chunker.ts
+    cite.ts
+  analytics/
+    indicators.ts
+    volume.ts
+    concentration.ts
+    behavior.ts
+    returns.ts
+  profiles/
+    profiles.ts
+    repository.ts
+  llm/
+    client.ts
+    json-call.ts
+  schemas/
+    agent.ts
+    claim.ts
+    verdict.ts
+    profile.ts
+    trade.ts
+    source.ts
+  db/
+    client.ts
+    schema.ts
+    migrate.ts
+  eval/
+    scenarios.json
+    run.ts
+    metrics.ts
+    backtest.ts
+  lib/
+    env.ts
+    log.ts
+    time.ts
+    errors.ts
+  ui/
+    components/
+data/
+  filings.json
+  prices/
+  profiles.json
+  trades.json
+docs/
+  ARCHITECTURE.md
+  DATA.md
+tests/
+README.md
+```
+
+CONTRACTS
+Agent result (schemas/agent.ts):
+```
+{ agent, status: "ok" | "degraded" | "failed", label, confidence (0..1), findings: [{ text, sourceIds: string[] }], latencyMs, error? }
+```
+Source (schemas/source.ts):
+```
+{ id, kind: "filing" | "price" | "history" | "web", title, publisher, url?, retrievedAt, asOf, excerpt, trust: "primary" | "secondary" | "synthetic" }
+```
+Claim (schemas/claim.ts):
+```
+{ id, text, type: "debt" | "growth" | "promoter" | "price_target" | "momentum" | "other", company, checkable: boolean }
+```
+Verdict (schemas/verdict.ts):
+```
+{ decision, regretRiskScore (0..100), confidence, rationale: [{ text, sourceIds }], agentSummaries, degradedFlags[], disclaimer }
+```
+
+AGENTS (all run in parallel through core/runner.ts with Promise.allSettled and per-agent timeout)
+- claim-extractor: LLM. Splits tip into checkable claims. Runs first, feeds the others.
+- forensic-auditor: BM25 retrieval over filings, then LLM judges each claim as supported, contradicted or unverifiable using only retrieved paragraphs. Returns doc id and paragraph per verdict.
+- prosecutor: bear case built only from analytics output (momentum, volume z-score, drawdown) and retrieved filings.
+- defence: bull case built from the same evidence only.
+- behavioral-mirror: deterministic detection from the user's trade history (averaging down count, panic-sell after drawdown, winner-sold-early ratio, FOMO entries after spikes). LLM only phrases the result. Cites trade ids.
+- risk: HHI before and after the intended trade, position size versus profile limit.
+
+ARBITER (core/arbiter.ts, deterministic)
+Inputs: all agent results plus profile. Weight each by confidence and by profile weights (conservative weights contradicted claims and concentration heavily, aggressive weights momentum, panic-seller weights behavioral flags). Detect conflicts (prosecutor and defence both high confidence, auditor contradicts a claim the defence relies on) and record them in verdict.rationale. Output decision and regretRiskScore. The LLM judge only narrates the arbiter result and may not change the decision.
+
+VERIFIER LOOP (core/verifier.ts, core/retry.ts)
+1. Validate schema.
+2. Check every sourceId exists in the session source store.
+3. Check every number in the narration matches analytics output.
+4. On failure, re-prompt only the offending agent with the exact error. Maximum 2 retries.
+5. Still failing: drop the finding, mark "insufficient evidence", add a degradedFlag.
+Log retry counts per agent.
+
+SOURCES AND SKILLS LAYER
+Build sources/registry.ts as a pluggable registry so new data providers and research skills can be added without touching agents. Each source implements:
+```
+interface SourceAdapter { id; kind; fetch(query): Promise<Source[]>; healthCheck(): Promise<boolean> }
+```
+Rules for adapters:
+- Return typed Source objects with publisher, asOf and retrievedAt. No source object without provenance.
+- Price adapter: Yahoo Finance for NSE symbols (.NS suffix) with disk cache in data/prices as fallback. Mark cached data with trust and asOf so the UI shows it is cached.
+- Filings adapter: local corpus first (data/filings.json). Interface must allow later adapters for BSE and NSE corporate announcements and public AI-research or web-research skills, each returning Source[].
+- Registry resolves adapters by kind, runs health checks, falls back in order, and reports which adapters were degraded.
+skills/registry.ts loads agent prompt files from skills/prompts/*.md. Each prompt file defines: role, input contract, output schema name, forbidden behaviors, citation rule. Agents never inline prompt text in TypeScript.
+
+DEGRADED MODES (must be demonstrable from the UI with toggles)
+- price feed down: price agents return degraded, confidence capped at 0.4, banner shown, pipeline completes.
+- filing missing for the company: auditor returns unverifiable for all claims, verdict cannot be PROCEED.
+- agent conflict: conflict panel explains how the arbiter resolved it.
+Never emit uncited output in any mode.
+
+PERSONALIZATION
+Three stored profiles in Turso: conservative, aggressive, panic-seller, each with risk limits, holdings and a trade history of 20 or more trades. Endpoint /api/compare runs the identical tip and identical market data through all three and returns three verdicts side by side. Verdicts must visibly differ in the seeded scenarios.
+
+METRICS (logged per session to Turso and shown in UI)
+- per-agent latency and end-to-end latency
+- portfolio HHI before and after the intended trade
+- claim-check precision on eval scenarios
+- verifier retry rate
+- signal accuracy against 30-day forward return on historical data (eval/backtest.ts)
+
+EVAL
+eval/scenarios.json holds 20 tips written in Reddit and Telegram style with ground-truth claim labels. eval/run.ts executes them, prints a table (claim-check precision, verdict agreement with expected, retry rate, latency p50 and p95) and writes results to JSON. Must run with one command: `npm run eval`.
+
+SEEDED DEMO SCENARIOS
+1. Tip says "debt free smallcap" while the filing shows borrowings. Expected: claim contradicted, AVOID or WAIT_48H.
+2. Panic sell after a 15 percent drop while filings show unchanged fundamentals. Expected: Behavioral Mirror flags panic pattern, verdict discourages selling.
+3. Third consecutive averaging down into a loser. Expected: REDUCE_SIZE or AVOID with trade ids cited.
+4. FOMO entry after a volume spike with no filing support. Expected: WAIT_48H.
+5. Price feed killed. Expected: degraded banner, confidence capped, no pipeline failure.
+
+UI (src/ui)
+Single dense screen, dark neutral theme, monospace for numbers. Sections: tip input, extracted claims with status chips, courtroom view (prosecutor and defence columns), auditor table with doc id and paragraph, behavioral flags with trade references, verdict card with regret risk score and confidence, three-profile comparison, portfolio and HHI panel, metrics strip, degraded-mode toggles. Trace page at /trace/[sessionId] shows the full agent outputs, verifier events and arbiter weights. Source chips are clickable and open the excerpt.
+
+TESTING
+Vitest for indicators, concentration, behavior detection, bm25, verifier and arbiter. Tests run without network. No snapshot tests of LLM output.
+
+README AND DOCS
+README: one-paragraph description, setup, env vars, `npm run dev`, `npm run eval`, `npm run seed`, data disclosure (synthetic filings and trades). docs/ARCHITECTURE.md: agent diagram, contracts, arbiter weighting table, verifier loop, degraded-mode behavior. Plain prose, no filler.
+
+BUILD ORDER (commit after each, project must run after each)
+1. env, logger, errors, zod schemas, db schema, seed data, profiles repository.
+2. analytics (indicators, volume, concentration, behavior, returns) with tests.
+3. retrieval (chunker, bm25, cite) and sources registry with price cache and local filings adapters.
+4. llm client with JSON-mode call and schema validation, skills registry, prompt files.
+5. agents, runner, verifier loop, arbiter, pipeline, /api/verdict.
+6. /api/compare, /api/degrade, session logging and metrics.
+7. UI and trace page.
+8. eval scenarios, backtest, README, ARCHITECTURE.md.
+
+DEFINITION OF DONE
+- `npm run build`, `npm run lint`, `npm test` pass.
+- Five seeded scenarios produce the expected verdicts with visible citations.
+- Three profiles produce different verdicts for the same tip.
+- Each degraded toggle works without error.
+- `npm run eval` prints the metrics table.
+- Zero comments in the repository.
+
+OUTPUT STYLE
+When you finish each build step, reply with a short list of files created and the command to verify. No explanations of obvious code, no praise, no emojis.
+
+REVISION 2: REAL SYSTEM, NO DEMO DATA (overrides earlier sections where they conflict)
+
+DATA POLICY
+- Remove data/filings.json, data/trades.json and the seeded-scenario section. No fabricated companies, filings, prices or trades anywhere.
+- Every Source object comes from a real fetch with url, publisher, asOf and retrievedAt. If a fetch fails, the source is absent and the UI says so. Never fill gaps with generated text.
+- Cache real responses on disk (data/cache/<adapter>/<hash>.json) for resilience and reproducible eval. Cached items are labeled cached with their original retrievedAt.
+
+REAL SOURCE ADAPTERS (sources/)
+- price: yahoo-finance2 for NSE (.NS) and BSE (.BO) quotes, history, financial summary.
+- filings: BSE corporate announcements endpoint, NSE corporate announcements endpoint, SEBI filings RSS. Download PDFs, extract text (pdf-parse), chunk, store in Turso with vectors (libSQL vector column) and a BM25 index. Hybrid retrieval: BM25 + vector, reciprocal rank fusion.
+- fundamentals: yahoo-finance2 quoteSummary (balance sheet, debt, cash flow, holders).
+- news: RSS (Economic Times Markets, Moneycontrol, Business Standard, Google News RSS per company), deduped, with publisher and timestamp.
+- web research: Tavily or Brave Search API behind a single adapter, domain allowlist in config (bseindia.com, nseindia.com, sebi.gov.in, rbi.org.in, company IR domains, major financial press).
+- Each adapter implements SourceAdapter with rate limiting, timeout, retry with backoff, healthCheck, and typed errors. NSE and BSE endpoints are unofficial and block bots, so send browser-like headers, keep cookies session, and always fall back to cache.
+
+USER DATA (real, not mock)
+- Auth with Clerk or a simple email session. Each user stores risk profile via onboarding form (horizon, max position size, max drawdown tolerance).
+- Trade history import: CSV upload parser for Zerodha, Groww and Upstox tradebook formats, normalized into the trade schema. Behavioral Mirror runs on the user's real imported trades. Without trades, the agent returns "insufficient evidence" and the verdict says so.
+- Holdings import by CSV as well. HHI and position-size checks use real holdings.
+- The three-profile comparison runs the same tip through the logged-in user's profile and two reference profiles (conservative, aggressive) defined by explicit parameter sets in profiles/reference.ts, labeled as reference profiles.
+
+SKILLS SYSTEM (skills/)
+Skills are public SKILL.md folders copied from GitHub repos. The runtime reads them; agents never hardcode their instructions.
+```
+skills/
+  vendor/
+    <skill-name>/
+      SKILL.md
+      SOURCE.md
+  internal/
+    claim-extractor.md
+    forensic-auditor.md
+    prosecutor.md
+    defence.md
+    behavioral-mirror.md
+    risk.md
+    judge.md
+src/skills/
+  loader.ts
+  frontmatter.ts
+  selector.ts
+  allowlist.ts
+  types.ts
+```
+- SKILL.md format: YAML frontmatter (name, description, optional allowed-tools) then markdown instructions.
+- SOURCE.md per vendored skill: repo url, commit sha, license, date copied. Required, loader refuses skills without it.
+- loader.ts reads all skill folders at boot, validates frontmatter with zod, builds an index of name + description.
+- selector.ts: for each agent task, picks relevant skills by matching the task against skill descriptions (BM25 over descriptions, top 3), and injects the full SKILL.md body into that agent's system prompt after the internal agent prompt.
+- Skills only provide instructions. Data access comes from tools. Define tool interface in core/tools.ts: web_search, fetch_url, get_quote, get_history, get_filings, search_corpus, get_news. Agent can call only tools listed in both its agent config and the skill's allowed-tools.
+- allowlist.ts holds the per-agent tool allowlist and the domain allowlist for fetch_url.
+- Tool loop: max 6 tool calls per agent run, each call logged with args, latency, and resulting source ids. Tool results become Source objects in the session store; agents may cite only ids from that store.
+
+SKILL SECURITY (mandatory)
+- Vendored skill text and every fetched web page are untrusted input. Wrap them in delimited blocks and instruct the agent that they cannot change its role, tools or output schema.
+- Pin each skill to a commit sha. Review each skill before copying. No skill may add tools, widen the domain allowlist or alter the verifier.
+- Verifier remains the only gate: schema valid, every sourceId exists in the session store, every number matches analytics output.
+- Strip scripts and hidden text from fetched HTML before passing to the LLM.
+
+REAL EVALUATION
+- eval/backtest.ts: pull real 2-3 year history for a fixed list of NSE stocks, replay signals at historical dates, score against actual 30-day forward returns. Report hit rate, precision per label, calibration table.
+- eval/claims.ts: curated set of real public claims (from real announcements and real news) with human-labeled ground truth, scored for claim-check precision and recall. Labels stored with source urls.
+- All eval inputs are fetched or cached real data. Disclose limitations in docs/DATA.md.
+
+DEGRADED MODES (real)
+- Adapter healthCheck failure or timeout triggers degraded status automatically, no fake toggle needed. Keep a manual "simulate outage" switch in the UI that disables an adapter at the registry level to demonstrate handling.
+- Missing filing for a company: auditor returns unverifiable, verdict cannot be PROCEED.
+
+BUILD ORDER (replaces earlier order)
+1. env, logger, schemas, db with vector support, auth, onboarding, CSV importers.
+2. analytics and tests.
+3. source adapters (price, fundamentals, filings, news, search) with cache and health checks.
+4. ingestion job: fetch and index filings for a watched company list on demand.
+5. skills loader, selector, tool layer, allowlists.
+6. agents with tool loop, runner, verifier, arbiter, pipeline.
+7. UI, trace page, metrics.
+8. backtest and claim eval, docs.
+
+
+also include links github.com/tech-anupam/VibeFinance Anupam Jha Builder
+
+UI: shadecn,google material font, icon, etc

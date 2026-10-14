@@ -1,0 +1,202 @@
+[
+  {
+    "id": "scenario-1",
+    "tipText": "RELIANCE net debt is zero in O2C and telecom. Capex ramping up in green energy. Target 3400 easy in 3 months! Buy now!",
+    "symbol": "RELIANCE.NS",
+    "expectedVerdict": "PROCEED",
+    "expectedClaims": [
+      { "text": "Net debt is zero in O2C and telecom", "type": "debt" },
+      { "text": "Capex ramping up in green energy", "type": "growth" },
+      { "text": "Target 3400 in 3 months", "type": "price_target" }
+    ]
+  },
+  {
+    "id": "scenario-2",
+    "tipText": "TCS promoter holding dropped by 20% due to emergency selling! Huge management crisis, exit before crash!!",
+    "symbol": "TCS.NS",
+    "expectedVerdict": "AVOID",
+    "expectedClaims": [
+      { "text": "Promoter holding dropped by 20%", "type": "promoter" },
+      { "text": "Emergency selling by promoters", "type": "promoter" }
+    ]
+  },
+  {
+    "id": "scenario-3",
+    "tipText": "HDFC Bank has massive NPA surge above 10% after merger. Regulators launching surprise audit this week. Dump all shares!",
+    "symbol": "HDFCBANK.NS",
+    "expectedVerdict": "AVOID",
+    "expectedClaims": [
+      { "text": "Gross NPA surge above 10%", "type": "debt" },
+      { "text": "Regulators launching surprise audit", "type": "other" }
+    ]
+  },
+  {
+    "id": "scenario-4",
+    "tipText": "INFY zero debt with USD 2.9B free cash flow. Deal wins steady. Good long-term compounder at current valuation.",
+    "symbol": "INFY.NS",
+    "expectedVerdict": "PROCEED",
+    "expectedClaims": [
+      { "text": "Zero debt", "type": "debt" },
+      { "text": "USD 2.9 billion free cash flow", "type": "growth" }
+    ]
+  },
+  {
+    "id": "scenario-5",
+    "tipText": "TATAMOTORS JLR debt slashed significantly, strong global demand for Land Rover Defender. Buy on dips for multi-year rally.",
+    "symbol": "TATAMOTORS.NS",
+    "expectedVerdict": "PROCEED",
+    "expectedClaims": [
+      { "text": "JLR debt slashed significantly", "type": "debt" },
+      { "text": "Strong global demand for Land Rover Defender", "type": "growth" }
+    ]
+  },
+  {
+    "id": "scenario-6",
+    "tipText": "ZOMATO turning profitable with Blinkit growing 90% YoY. Net cash over 10000 Cr. Double from here in 6 months guaranteed!",
+    "symbol": "ZOMATO.NS",
+    "expectedVerdict": "REDUCE_SIZE",
+    "expectedClaims": [
+      { "text": "Turning profitable", "type": "growth" },
+      { "text": "Blinkit growing 90% YoY", "type": "growth" },
+      { "text": "Net cash over 10000 Cr", "type": "debt" }
+    ]
+  },
+  {
+    "id": "scenario-7",
+    "tipText": "IRCTC is zero debt monopoly with 62% govt holding. Breakout happening right now on high volumes, easy 30% upside.",
+    "symbol": "IRCTC.NS",
+    "expectedVerdict": "PROCEED",
+    "expectedClaims": [
+      { "text": "Zero debt monopoly", "type": "debt" },
+      { "text": "62% govt holding", "type": "promoter" },
+      { "text": "Volume breakout happening", "type": "momentum" }
+    ]
+  },
+  {
+    "id": "scenario-8",
+    "tipText": "ITC demerger of hotel business approved. Cash surplus huge, safe 4% dividend yield play. Defensive bet in volatile market.",
+    "symbol": "ITC.NS",
+    "expectedVerdict": "PROCEED",
+    "expectedClaims": [
+      { "text": "Demerger of hotel business approved", "type": "growth" },
+      { "text": "Cash surplus huge", "type": "debt" },
+      { "text": "4% dividend yield play", "type": "growth" }
+    ]
+  },
+  {
+    "id": "scenario-9",
+    "tipText": "Pump and dump penny stock alert! Guaranteed 500% profit in 1 week. Insiders are accumulating 100% of floating shares!",
+    "symbol": "UNKNOWN.NS",
+    "expectedVerdict": "AVOID",
+    "expectedClaims": [
+      { "text": "Guaranteed 500% profit in 1 week", "type": "price_target" },
+      { "text": "Insiders accumulating 100% of floating shares", "type": "promoter" }
+    ]
+  },
+  {
+    "id": "scenario-10",
+    "tipText": "RELIANCE promoter pledging increased to 80%! Creditors issuing margin call notices! Big drop coming tomorrow!",
+    "symbol": "RELIANCE.NS",
+    "expectedVerdict": "AVOID",
+    "expectedClaims": [
+      { "text": "Promoter pledging increased to 80%", "type": "promoter" },
+      { "text": "Creditors issuing margin call notices", "type": "debt" }
+    ]
+  },
+  {
+    "id": "scenario-11",
+    "tipText": "TCS operating margin under pressure at 24.6% due to wage hikes. Wait for better entry price around support level.",
+    "symbol": "TCS.NS",
+    "expectedVerdict": "WAIT_48H",
+    "expectedClaims": [
+      { "text": "Operating margin at 24.6%", "type": "growth" }
+    ]
+  },
+  {
+    "id": "scenario-12",
+    "tipText": "HDFC Bank capital adequacy ratio 18.8% with stable net NPA at 0.33%. Institutional accumulation visible in recent blocks.",
+    "symbol": "HDFCBANK.NS",
+    "expectedVerdict": "PROCEED",
+    "expectedClaims": [
+      { "text": "Capital adequacy ratio 18.8%", "type": "debt" },
+      { "text": "Net NPA at 0.33%", "type": "debt" }
+    ]
+  },
+  {
+    "id": "scenario-13",
+    "tipText": "INFY promoter Sudha Murty sold entire stake secretly in off-market block deal. Massive selloff expected on opening bell!",
+    "symbol": "INFY.NS",
+    "expectedVerdict": "AVOID",
+    "expectedClaims": [
+      { "text": "Promoter sold entire stake secretly in off-market block deal", "type": "promoter" }
+    ]
+  },
+  {
+    "id": "scenario-14",
+    "tipText": "TATAMOTORS commercial vehicle cycle peaking. EV division facing margin compression. Accumulate slowly or wait for clarity.",
+    "symbol": "TATAMOTORS.NS",
+    "expectedVerdict": "WAIT_48H",
+    "expectedClaims": [
+      { "text": "Commercial vehicle cycle peaking", "type": "growth" },
+      { "text": "EV division facing margin compression", "type": "growth" }
+    ]
+  },
+  {
+    "id": "scenario-15",
+    "tipText": "ZOMATO going to declare bankruptcy soon as food delivery losses widen to 5000 Cr this quarter! Run for your life!",
+    "symbol": "ZOMATO.NS",
+    "expectedVerdict": "AVOID",
+    "expectedClaims": [
+      { "text": "Declaring bankruptcy soon", "type": "debt" },
+      { "text": "Food delivery losses widen to 5000 Cr", "type": "growth" }
+    ]
+  },
+  {
+    "id": "scenario-16",
+    "tipText": "IRCTC catering license cancelled by Indian Railways with immediate effect! Revenue will drop 80% overnight!",
+    "symbol": "IRCTC.NS",
+    "expectedVerdict": "AVOID",
+    "expectedClaims": [
+      { "text": "Catering license cancelled by Indian Railways", "type": "other" },
+      { "text": "Revenue will drop 80%", "type": "growth" }
+    ]
+  },
+  {
+    "id": "scenario-17",
+    "tipText": "ITC tobacco taxation expected to spike 50% in upcoming budget. Wait 48 hours for GST council outcome before buying.",
+    "symbol": "ITC.NS",
+    "expectedVerdict": "WAIT_48H",
+    "expectedClaims": [
+      { "text": "Tobacco taxation expected to spike 50%", "type": "other" }
+    ]
+  },
+  {
+    "id": "scenario-18",
+    "tipText": "RELIANCE retail arm revenue crossed 3 lakh crore. IPO announcement expected in AGM. Great risk-reward entry.",
+    "symbol": "RELIANCE.NS",
+    "expectedVerdict": "PROCEED",
+    "expectedClaims": [
+      { "text": "Retail arm revenue crossed 3 lakh crore", "type": "growth" },
+      { "text": "IPO announcement expected in AGM", "type": "growth" }
+    ]
+  },
+  {
+    "id": "scenario-19",
+    "tipText": "TCS bag 1 billion dollar mega deal in UK insurance sector. Free cash conversion strong. Solid defensive buy.",
+    "symbol": "TCS.NS",
+    "expectedVerdict": "PROCEED",
+    "expectedClaims": [
+      { "text": "Bag 1 billion dollar mega deal in UK insurance sector", "type": "growth" },
+      { "text": "Free cash conversion strong", "type": "debt" }
+    ]
+  },
+  {
+    "id": "scenario-20",
+    "tipText": "Secret operator group taking this stock 10x! No fundamentals needed, pure pump. WhatsApp group exclusive!",
+    "symbol": "UNKNOWN.NS",
+    "expectedVerdict": "AVOID",
+    "expectedClaims": [
+      { "text": "Secret operator group taking this stock 10x", "type": "price_target" }
+    ]
+  }
+]
